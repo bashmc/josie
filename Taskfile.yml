@@ -1,4 +1,26 @@
-version: '3'
+version: "3"
 
+dotenv: [".env"]
+env:
+  TEST_DB_URL: postgres://kobie:pa55word@localhost:5432/split_test_db?sslmode=disable
 tasks:
-  run: go run ./cmd/api
+  run:
+    cmd: go run ./cmd/api
+
+  up:
+    cmd: goose -dir ./migrations postgres $DB_URL up
+
+  down:
+    cmd: goose -dir ./migrations postgres $DB_URL down
+
+  reset:
+    cmd: goose -dir ./migrations postgres $DB_URL reset
+
+  test-up:
+    cmd: goose -dir ./migrations postgres $TEST_DB_URL up
+
+  test-down:
+    cmd: goose -dir ./migrations postgres $TEST_DB_URL down
+
+  test-reset: 
+    cmd: goose -dir ./migrations postgres $TEST_DB_URL reset

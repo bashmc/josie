@@ -1,0 +1,104 @@
+package postgres
+
+import (
+	"context"
+	"errors"
+	"log/slog"
+
+	"github.com/G88X/split/models"
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+type UserStore struct {
+	conn *pgxpool.Pool
+}
+
+func NewUserStore(conn *pgxpool.Pool) models.UserStore {
+	return &UserStore{
+		conn: conn,
+	}
+}
+
+// CreatUser implements models.UserStore.
+func (u *UserStore) CreatUser(ctx context.Context, user *models.User) error {
+	query := `
+		INSERT INTO users (id, name, email, password, created_at, updated_at, active)
+		VALUES ($1, NULLIF($2,''), $3, $4, $5, $6, $7);`
+
+	_, err := u.conn.Exec(ctx, query,
+		user.ID,
+		user.Name,
+		user.Email,
+		user.Password,
+		user.CreatedAt,
+		user.UpdatedAt,
+		user.Active,
+	)
+	return err
+}
+
+// DeleteUser implements models.UserStore.
+func (u *UserStore) DeleteUser(ctx context.Context, id string) error {
+	query := `DELETE FROM users WHERE id = $1;`
+
+	result, err := u.conn.Exec(ctx, query, id)
+	if err != nil {
+		slog.Error("failed delete user", "error", err)
+		return err
+	}
+
+
+	if result.RowsAffected() == 0{
+		// TODO: return defined error
+		return errors.New("no rows deleted")
+	}
+	return nil
+}
+
+// GetUser implements models.UserStore.
+func (u *UserStore) GetUser(ctx context.Context, id string) (models.User, error) {
+	query := `
+		SELECT id, name, email, password, created_at, updated_at, active 
+		FROM users 
+		WHERE id = $1 OR email = $1;`
+
+	var user models.User
+	err := u.conn.QueryRow(ctx, query, id).Scan(
+		&user.ID,
+		&user.Name,
+		&user.Email,
+		&user.Password,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+		&user.Active,
+	)
+	return user, err
+}
+
+// UpdateUser implements models.UserStore.
+func (u *UserStore) UpdateUser(ctx context.Context, user *models.User) error {
+	query := `
+		UPDATE users 
+		SET name = $1, email = $2, password = $3, updated_at = $4, active = $5
+		WHERE id = $6;`
+
+	result , err := u.conn.Exec(ctx, query,
+		user.Name,
+		user.Email,
+		user.Password,
+		user.UpdatedAt,
+		user.Active,
+		user.ID,
+	)
+	if err != nil {
+		slog.Error("failed update user", "error", err)
+		return err
+	}
+
+	if result.RowsAffected() == 0{
+		// TODO: return defined error
+		return errors.New("no rows were updated")
+	}
+
+	return nil
+}

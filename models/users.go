@@ -1,16 +1,23 @@
 package models
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 type User struct {
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	CreatedAt string `json:"createAt"`
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Password  string    `json:"-"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Active    bool      `json:"active"`
 }
 
 type UserStore interface {
 	CreatUser(ctx context.Context, user *User) error
 	UpdateUser(ctx context.Context, user *User) error
-	GetUser(ctx context.Context, Id string) (User, error)
-	DeleteUser(ctx context.Context, Id string) error
+	GetUser(ctx context.Context, ID string) (User, error)
+	DeleteUser(ctx context.Context, ID string) error
 }
