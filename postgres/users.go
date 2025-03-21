@@ -19,8 +19,8 @@ func NewUserStore(conn *pgxpool.Pool) models.UserStore {
 	}
 }
 
-// CreatUser implements models.UserStore.
-func (u *UserStore) CreatUser(ctx context.Context, user *models.User) error {
+// InsertUser implements models.UserStore.
+func (u *UserStore) InsertUser(ctx context.Context, user *models.User) error {
 	query := `
 		INSERT INTO users (id, name, email, password, created_at, updated_at, active)
 		VALUES ($1, NULLIF($2,''), $3, $4, $5, $6, $7);`
@@ -47,8 +47,7 @@ func (u *UserStore) DeleteUser(ctx context.Context, id string) error {
 		return err
 	}
 
-
-	if result.RowsAffected() == 0{
+	if result.RowsAffected() == 0 {
 		// TODO: return defined error
 		return errors.New("no rows deleted")
 	}
@@ -82,7 +81,7 @@ func (u *UserStore) UpdateUser(ctx context.Context, user *models.User) error {
 		SET name = $1, email = $2, password = $3, updated_at = $4, active = $5
 		WHERE id = $6;`
 
-	result , err := u.conn.Exec(ctx, query,
+	result, err := u.conn.Exec(ctx, query,
 		user.Name,
 		user.Email,
 		user.Password,
@@ -95,7 +94,7 @@ func (u *UserStore) UpdateUser(ctx context.Context, user *models.User) error {
 		return err
 	}
 
-	if result.RowsAffected() == 0{
+	if result.RowsAffected() == 0 {
 		// TODO: return defined error
 		return errors.New("no rows were updated")
 	}

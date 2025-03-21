@@ -54,7 +54,6 @@ func TestUserStore_CreateUser(t *testing.T) {
 	store := postgres.NewUserStore(pool)
 	ctx := context.Background()
 
-
 	email := generateTestEmail()
 
 	tests := []struct {
@@ -87,7 +86,7 @@ func TestUserStore_CreateUser(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := store.CreatUser(ctx, tt.user)
+			err := store.InsertUser(ctx, tt.user)
 			if tt.wantErr {
 				assert.Error(t, err)
 				return
@@ -109,7 +108,7 @@ func TestUserStore_GetUser(t *testing.T) {
 	ctx := context.Background()
 
 	user := createTestUser("Get Test", generateTestEmail())
-	require.NoError(t, store.CreatUser(ctx, user))
+	require.NoError(t, store.InsertUser(ctx, user))
 
 	tests := []struct {
 		name    string
@@ -152,7 +151,7 @@ func TestUserStore_UpdateUser(t *testing.T) {
 	ctx := context.Background()
 
 	user := createTestUser("Update Test", generateTestEmail())
-	require.NoError(t, store.CreatUser(ctx, user))
+	require.NoError(t, store.InsertUser(ctx, user))
 
 	tests := []struct {
 		name    string
@@ -207,7 +206,7 @@ func TestUserStore_DeleteUser(t *testing.T) {
 	ctx := context.Background()
 
 	user := createTestUser("Delete Test", generateTestEmail())
-	require.NoError(t, store.CreatUser(ctx, user))
+	require.NoError(t, store.InsertUser(ctx, user))
 
 	tests := []struct {
 		name    string

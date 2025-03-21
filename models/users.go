@@ -16,7 +16,7 @@ type User struct {
 }
 
 type UserStore interface {
-	CreatUser(ctx context.Context, user *User) error
+	InsertUser(ctx context.Context, user *User) error
 	UpdateUser(ctx context.Context, user *User) error
 	GetUser(ctx context.Context, ID string) (User, error)
 	DeleteUser(ctx context.Context, ID string) error
