@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 )
 
@@ -27,7 +28,7 @@ func readJson(w http.ResponseWriter, r *http.Request, dest any) error {
 	return nil
 }
 
-func writeJson(w http.ResponseWriter, statusCode int, data any, headers ...http.Header) error {
+func writeJson(w http.ResponseWriter, statusCode int, data any, headers ...http.Header) {
 	if len(headers) > 0 {
 		for key, value := range headers[0] {
 			w.Header()[key] = value
@@ -37,6 +38,11 @@ func writeJson(w http.ResponseWriter, statusCode int, data any, headers ...http.
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
-	encoder := json.NewEncoder(w)
-	return encoder.Encode(data)
+	if data != nil {
+		if err := json.NewEncoder(w).Encode(data); err != nil {
+			slog.Error("failed to encode response", "error", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(Map{"error": "Internal server error"})
+		}
+	}
 }
