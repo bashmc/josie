@@ -5,8 +5,8 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/G88X/split/models"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/u88x/split/models"
 )
 
 type UserStore struct {

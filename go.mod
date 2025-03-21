@@ -1,4 +1,4 @@
-module github.com/G88X/split
+module github.com/u88x/split
 
 go 1.24.1
 
