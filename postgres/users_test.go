@@ -30,13 +30,13 @@ func setupTestDB(t *testing.T) *pgxpool.Pool {
 
 func createTestUser(name, email string) *models.User {
 	return &models.User{
-		ID:        uuid.New().String(),
-		Name:      name,
-		Email:     email,
-		Password:  "hashedpassword",
-		CreatedAt: time.Now().UTC(),
-		UpdatedAt: time.Now().UTC(),
-		Active:    true,
+		ID:           uuid.New().String(),
+		Name:         name,
+		Email:        email,
+		PasswordHash: []byte("hashedpassword"),
+		CreatedAt:    time.Now().UTC(),
+		UpdatedAt:    time.Now().UTC(),
+		Active:       true,
 	}
 }
 
@@ -74,11 +74,11 @@ func TestUserStore_CreateUser(t *testing.T) {
 		{
 			name: "empty name",
 			user: &models.User{
-				ID:        uuid.New().String(),
-				Email:     generateTestEmail(),
-				Password:  "hashedpassword",
-				CreatedAt: time.Now().UTC(),
-				UpdatedAt: time.Now().UTC(),
+				ID:           uuid.New().String(),
+				Email:        generateTestEmail(),
+				PasswordHash: []byte("hashedpassword"),
+				CreatedAt:    time.Now().UTC(),
+				UpdatedAt:    time.Now().UTC(),
 			},
 			wantErr: true,
 		},
