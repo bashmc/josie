@@ -53,8 +53,8 @@ func (s *UserService) UpdateUser(ctx context.Context, user *models.User) error {
 }
 
 // FetchUser retrieves a user by ID or email
-func (s *UserService) FetchUser(ctx context.Context, idOrEmail string) (*models.User, error) {
-	user, err := s.store.GetUser(ctx, idOrEmail)
+func (s *UserService) FetchUser(ctx context.Context, identifier string) (*models.User, error) {
+	user, err := s.store.GetUser(ctx, identifier)
 	if err != nil {
 		return nil, err
 	}
