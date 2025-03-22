@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/xpmuse/split/models"
+	"github.com/tcpbot/split/models"
 )
 
 type UserStore struct {

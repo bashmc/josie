@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/xpmuse/split/models"
+	"github.com/tcpbot/split/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

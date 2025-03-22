@@ -1,4 +1,4 @@
-module github.com/xpmuse/split
+module github.com/tcpbot/split
 
 go 1.24.1
 
