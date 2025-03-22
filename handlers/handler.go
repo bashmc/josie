@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/u88x/split/services"
+import "github.com/xpmuse/split/services"
 
 type AppHandler struct {
 	us *services.UserService

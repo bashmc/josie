@@ -12,8 +12,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/u88x/split/models"
-	"github.com/u88x/split/postgres"
+	"github.com/xpmuse/split/models"
+	"github.com/xpmuse/split/postgres"
 )
 
 func setupTestDB(t *testing.T) *pgxpool.Pool {
