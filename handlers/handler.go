@@ -1,6 +1,6 @@
 package handlers
 
-import "github.com/tcpbot/split/services"
+import "github.com/xpmc/split/services"
 
 type AppHandler struct {
 	us *services.UserService
