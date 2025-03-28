@@ -46,3 +46,8 @@ func writeJson(w http.ResponseWriter, statusCode int, data any, headers ...http.
 		}
 	}
 }
+
+
+func sendServerError(w http.ResponseWriter, headers ...http.Header){
+	writeJson(w, http.StatusInternalServerError, Map{"message": "the server could not process your request"}, headers...)
+}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/xpmc/split/models"
@@ -34,7 +35,14 @@ func (u *UserStore) InsertUser(ctx context.Context, user *models.User) error {
 		user.UpdatedAt,
 		user.Active,
 	)
-	return err
+	if err != nil {
+		if strings.Contains(err.Error(), "SQLSTATE 23505") {
+			return models.ErrDuplicateUser
+		}
+		slog.Error("failed to insert user", "error", err)
+		return err
+	}
+	return nil
 }
 
 // DeleteUser implements models.UserStore.

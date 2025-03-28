@@ -6,12 +6,18 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 	"github.com/xpmc/split/handlers"
 	"github.com/xpmc/split/postgres"
 	"github.com/xpmc/split/services"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	db, err := pgxpool.New(context.Background(), os.Getenv("DB_URL"))
 	if err != nil {
 		panic(err)

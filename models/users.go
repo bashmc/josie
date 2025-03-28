@@ -2,7 +2,13 @@ package models
 
 import (
 	"context"
+	"errors"
 	"time"
+)
+
+var (
+	ErrUserNotFound  = errors.New("user not found")
+	ErrDuplicateUser = errors.New("user with email already exists")
 )
 
 type User struct {
