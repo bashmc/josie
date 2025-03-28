@@ -29,7 +29,7 @@ func (h *AppHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		sendServerError(w)
+		serverError(w)
 		return
 	}
 
@@ -41,7 +41,12 @@ func (h *AppHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.us.FetchUser(r.Context(), userId)
 	if err != nil {
-		writeJson(w, http.StatusNotFound, Map{"error": "User not found"})
+		if errors.Is(err, models.ErrUserNotFound) {
+			writeJson(w, http.StatusNotFound, Map{"error": "User not found"})
+			return
+		}
+
+		serverError(w)
 		return
 	}
 

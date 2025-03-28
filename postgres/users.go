@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/xpmc/split/models"
 )
@@ -56,8 +57,7 @@ func (u *UserStore) DeleteUser(ctx context.Context, id string) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		// TODO: return defined error
-		return errors.New("no rows deleted")
+		return models.ErrUserNotFound
 	}
 	return nil
 }
@@ -79,7 +79,12 @@ func (u *UserStore) GetUser(ctx context.Context, id string) (models.User, error)
 		&user.UpdatedAt,
 		&user.Active,
 	)
-	return user, err
+
+	if errors.Is(err, pgx.ErrNoRows) {
+		return models.User{}, models.ErrUserNotFound
+	}
+
+	return user, nil
 }
 
 // UpdateUser implements models.UserStore.
@@ -103,8 +108,7 @@ func (u *UserStore) UpdateUser(ctx context.Context, user *models.User) error {
 	}
 
 	if result.RowsAffected() == 0 {
-		// TODO: return defined error
-		return errors.New("no rows were updated")
+		return models.ErrUserNotFound
 	}
 
 	return nil
