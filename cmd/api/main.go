@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -15,24 +15,27 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		logFatal("failed to load environment variables", err)
 	}
 
 	db, err := pgxpool.New(context.Background(), os.Getenv("DB_URL"))
 	if err != nil {
-		panic(err)
+		logFatal("failed to connect to database", err)
 	}
 	defer db.Close()
 
 	err = db.Ping(context.Background())
 	if err != nil {
-		panic(err)
+		logFatal("failed to ping db", err)
 	}
 
 	handler := handlers.NewAppHandler(services.NewUserService(postgres.NewUserStore(db)))
 
 	srv := NewServer(handler)
 
-	log.Println("Starting server....")
-	log.Fatal(srv.start())
+	slog.Info("Starting server")
+	err = srv.start()
+	if err != nil {
+		logFatal("failed to start server", err)
+	}
 }
