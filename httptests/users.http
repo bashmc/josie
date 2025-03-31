@@ -6,9 +6,9 @@ POST {{baseUrl}}/users
 Content-Type: {{contentType}}
 
 {
-    "name": "Joan Doe",
-    "email": "joan.doe@example.com",
-    "password": "password123"
+    "name": "Realest Doe",
+    "email": "real.doe@example.com",
+    "password": "34"
 }
 
 

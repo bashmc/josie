@@ -10,15 +10,21 @@ import (
 
 func (h *AppHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		Name     string `json:"name"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Name     string `json:"name" validate:"required"`
+		Email    string `json:"email" validate:"required,email"`
+		Password string `json:"password" validate:"required,gte=8,lte=20"`
 	}
 
 	err := readJson(w, r, &input)
 	if err != nil {
 		slog.Error("failed to read request body", "error", err)
 		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
+		return
+	}
+
+	err = validate.Struct(input)
+	if err != nil {
+		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
 		return
 	}
 
@@ -38,6 +44,11 @@ func (h *AppHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *AppHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	userId := r.PathValue("id")
+	err := validate.Var(userId, "uuid")
+	if err != nil {
+		writeJson(w, http.StatusBadRequest, Map{"message": "invalid id"})
+		return
+	}
 
 	user, err := h.us.FetchUser(r.Context(), userId)
 	if err != nil {
@@ -55,8 +66,13 @@ func (h *AppHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *AppHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	userId := r.PathValue("id")
+	err := validate.Var(userId, "uuid")
+	if err != nil {
+		writeJson(w, http.StatusBadRequest, Map{"message": "invalid id"})
+		return
+	}
 
-	err := h.us.DeleteUser(r.Context(), userId)
+	err = h.us.DeleteUser(r.Context(), userId)
 	if err != nil {
 		if errors.Is(err, models.ErrUserNotFound) {
 			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})

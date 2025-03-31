@@ -1,6 +1,18 @@
 package handlers
 
-import "github.com/xpmc/split/services"
+import (
+	"github.com/go-playground/validator/v10"
+	"github.com/xpmc/split/services"
+)
+
+
+// TODO: remove global variable
+var validate *validator.Validate
+
+
+func init(){
+	validate = validator.New(validator.WithRequiredStructEnabled())
+}
 
 type AppHandler struct {
 	us *services.UserService
