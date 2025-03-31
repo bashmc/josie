@@ -42,7 +42,7 @@ func (h *AppHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	user, err := h.us.FetchUser(r.Context(), userId)
 	if err != nil {
 		if errors.Is(err, models.ErrUserNotFound) {
-			writeJson(w, http.StatusNotFound, Map{"error": "User not found"})
+			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
 			return
 		}
 
@@ -51,4 +51,21 @@ func (h *AppHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	writeJson(w, http.StatusOK, user)
+}
+
+func (h *AppHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	userId := r.PathValue("id")
+
+	err := h.us.DeleteUser(r.Context(), userId)
+	if err != nil {
+		if errors.Is(err, models.ErrUserNotFound) {
+			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
+			return
+		}
+
+		serverError(w)
+		return
+	}
+
+	writeJson(w, http.StatusOK, Map{"message": "user successfully deleted"})
 }
