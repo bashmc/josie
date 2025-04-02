@@ -1,0 +1,9 @@
+### Upload file
+POST http://localhost:7000/files
+Content-Type: multipart/form-data
+
+
+### Upload multiple files
+POST http://localhost:7000/files
+Content-Type: multipart/form-data
+

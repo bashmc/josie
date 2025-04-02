@@ -10,11 +10,12 @@ var (
 )
 
 type File struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Size string `json:"size"`
-	Ext  string `json:"ext"`
-	Url  string `json:"url"`
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Size   string `json:"size"`
+	Ext    string `json:"ext"`
+	UserID string `json:"userId"`
+	Url    string `json:"url"`
 }
 
 type FileStore interface {
