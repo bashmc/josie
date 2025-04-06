@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/gitkobie/split/models"
 	"github.com/google/uuid"
-	"github.com/xpmc/split/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

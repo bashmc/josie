@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/xpmc/split/handlers"
+	"github.com/gitkobie/split/handlers"
 )
 
 type Server struct {

@@ -5,11 +5,11 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/gitkobie/split/handlers"
+	"github.com/gitkobie/split/postgres"
+	"github.com/gitkobie/split/services"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"github.com/xpmc/split/handlers"
-	"github.com/xpmc/split/postgres"
-	"github.com/xpmc/split/services"
 )
 
 func main() {

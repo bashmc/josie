@@ -1,4 +1,4 @@
-module github.com/xpmc/split
+module github.com/gitkobie/split
 
 go 1.24.1
 

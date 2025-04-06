@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/xpmc/split/models"
+	"github.com/gitkobie/split/models"
 )
 
 func (h *AppHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
