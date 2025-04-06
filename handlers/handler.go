@@ -5,12 +5,10 @@ import (
 	"github.com/xpmc/split/services"
 )
 
-
 // TODO: remove global variable
 var validate *validator.Validate
 
-
-func init(){
+func init() {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 }
 

@@ -18,7 +18,7 @@ func NewServer(handler *handlers.AppHandler) *Server {
 
 func (s *Server) start() error {
 	srv := http.Server{
-		Addr: ":7000",
+		Addr:    ":7000",
 		Handler: s.loadRoutes(),
 	}
 
