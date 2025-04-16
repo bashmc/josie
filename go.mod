@@ -1,4 +1,4 @@
-module github.com/gitkobie/split
+module github.com/topbash/split
 
 go 1.24.1
 

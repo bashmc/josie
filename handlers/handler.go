@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/gitkobie/split/services"
 	"github.com/go-playground/validator/v10"
+	"github.com/topbash/split/services"
 )
 
 // TODO: remove global variable
