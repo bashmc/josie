@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/topbash/split/handlers"
+	"github.com/shcmd/split/handlers"
 )
 
 type Server struct {

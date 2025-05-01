@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/go-playground/validator/v10"
-	"github.com/topbash/split/services"
+	"github.com/shcmd/split/services"
 )
 
 // TODO: remove global variable
