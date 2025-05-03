@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/shcmd/split/models"
+	"github.com/ultcmd/split/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/shcmd/split/models"
+	"github.com/ultcmd/split/models"
 )
 
 type UserStore struct {

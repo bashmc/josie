@@ -7,9 +7,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"github.com/shcmd/split/handlers"
-	"github.com/shcmd/split/postgres"
-	"github.com/shcmd/split/services"
+	"github.com/ultcmd/split/handlers"
+	"github.com/ultcmd/split/postgres"
+	"github.com/ultcmd/split/services"
 )
 
 func main() {

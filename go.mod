@@ -1,4 +1,4 @@
-module github.com/shcmd/split
+module github.com/ultcmd/split
 
 go 1.24.1
 
