@@ -1,0 +1,153 @@
+{{define "subject"}} Welcome to Split {{end}}
+
+{{define "text"}}
+Hi {{.Address.Name}},
+
+Welcome to split! Your email address has been successfully verified, and your account is all set up.
+
+We're excited to help you store and share files more secure and effectively.
+
+If you have any questions or need assistance getting started, don't hesitate to visit our Help Center at
+https://support.split.com or reply to this email.
+
+We're thrilled to have you on board!
+
+Happy Sharing,
+The Split Team
+{{end}}
+
+{{define "html" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to split!</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #444444;
+        }
+
+        .content {
+            text-align: left;
+            padding: 0 10px;
+        }
+
+        .content h1 {
+            font-size: 22px;
+            color: #333333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .cta-button {
+            display: block;
+            width: fit-content;
+            margin: 25px auto;
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .secondary-actions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            text-align: center;
+        }
+
+        .secondary-actions h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #555555;
+        }
+
+        .secondary-actions ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .secondary-actions li {
+            margin-bottom: 10px;
+        }
+
+        .secondary-actions a {
+            color: #007bff;
+            /* Adjust link color */
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777777;
+        }
+
+        .footer p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <span
+        style="display:none; font-size:1px; color:#ffffff; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">You're
+        all set! Get started sharing files on split.</span>
+
+    <div class="container">
+        <div class="header">
+            {{template "subject"}}
+        </div>
+        <div class="content">
+            <h1>Welcome Aboard, {{.Address.Name}}!</h1>
+            <p>Your email address has been successfully verified, and your split account is ready to go.</p>
+            <p>We're excited to help you share, and store your files more effectively.</p>
+
+        </div>
+
+        <p style="text-align: center; margin-top: 30px;">If you have any questions, visit our <a
+                href="https://support.split.com">Help Center</a> or simply reply to this email.</p>
+
+    </div>
+    <div class="footer">
+        <p>Happy Sharing,<br>The Split Team</p>
+    </div>
+    </div>
+</body>
+
+</html>
+{{end}}

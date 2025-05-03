@@ -2,21 +2,36 @@ package services
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/shcmd/split/mail"
 	"github.com/shcmd/split/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
+var (
+	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrUnverifiedUser     = errors.New("user has an unverified email")
+	ErrInvalidToken       = errors.New("token is invalid or expired")
+)
+
+const (
+	VERIFICATION   = "verification"
+	AUTHENTICATION = "authentication"
+)
+
 type UserService struct {
 	store models.UserStore
+	mail  *mail.Mailer
 }
 
-func NewUserService(us models.UserStore) *UserService {
+func NewUserService(us models.UserStore, m *mail.Mailer) *UserService {
 	return &UserService{
 		store: us,
+		mail:  m,
 	}
 }
 
@@ -30,20 +45,103 @@ func (s *UserService) CreateUser(ctx context.Context, name, email, password stri
 	}
 	now := time.Now().UTC()
 	user := &models.User{
-		ID:           uuid.New().String(),
+		ID:           uuid.New(),
 		Name:         name,
 		Email:        email,
 		PasswordHash: hash,
 		CreatedAt:    now,
 		UpdatedAt:    now,
-		Active:       true,
+		Verified:     false,
 	}
 
 	if err := s.store.InsertUser(ctx, user); err != nil {
 		return nil, err
 	}
 
+	otpString := generateOTP()
+	otpHash := hashString(otpString)
+
+	userAddr := mail.Address{Name: user.Name, Email: user.Email}
+	data := mail.Data{
+		Address: userAddr,
+		Code:    otpString,
+	}
+
+	token := models.UserToken{
+		Hash:      otpHash,
+		UserID:    user.ID,
+		ExpiresAt: time.Now().Add(15 * time.Minute),
+		Scope:     VERIFICATION,
+	}
+
+	_ = s.store.InsertToken(ctx, &token)
+
+	s.sendEmail([]mail.Address{userAddr}, "verify_email.html", data)
+
 	return user, nil
+}
+
+func (us *UserService) VerifyUser(ctx context.Context, code string, email string) (models.User, error) {
+
+	hash := hashString(code)
+	user, err := us.store.GetUserForToken(ctx, hash, VERIFICATION, email)
+	if err != nil {
+		if errors.Is(err, models.ErrNotFound) {
+			return models.User{}, ErrInvalidToken
+		}
+		return models.User{}, err
+	}
+
+	user.Verified = true
+
+	err = us.store.UpdateUser(ctx, &user)
+	if err != nil {
+		return models.User{}, err
+	}
+
+	// Delete otp after successful verification
+	_ = us.store.DeleteToken(ctx, hash, VERIFICATION)
+
+	address := mail.Address{Name: user.Name, Email: user.Email}
+	us.sendEmail([]mail.Address{address}, "welcome_email.html", mail.Data{Address: address})
+
+	return user, nil
+}
+
+func (us *UserService) ResendOTP(ctx context.Context, email string) error {
+	user, err := us.store.GetUserByMail(ctx, email)
+	if err != nil {
+		return err
+	}
+
+	otpString := generateOTP()
+	otpHash := hashString(otpString)
+
+	userAddr := mail.Address{Email: email, Name: user.Name}
+	data := mail.Data{
+		Address: userAddr,
+		Code:    otpString,
+	}
+
+	token := models.UserToken{
+		Hash:      otpHash,
+		UserID:    user.ID,
+		ExpiresAt: time.Now().Add(15 * time.Minute),
+		Scope:     VERIFICATION,
+	}
+
+	err = us.store.InsertToken(ctx, &token)
+	if err != nil {
+		return err
+	}
+
+	us.sendEmail([]mail.Address{userAddr}, "verify_email.html", data)
+
+	return nil
+}
+
+func (us *UserService) NewSession(context context.Context, email string, password string) (any, error) {
+	panic("unimplemented")
 }
 
 // UpdateUser updates an existing user's details
@@ -53,8 +151,8 @@ func (s *UserService) UpdateUser(ctx context.Context, user *models.User) error {
 }
 
 // FetchUser retrieves a user by ID or email
-func (s *UserService) FetchUser(ctx context.Context, identifier string) (*models.User, error) {
-	user, err := s.store.GetUser(ctx, identifier)
+func (s *UserService) FetchUser(ctx context.Context, id uuid.UUID) (*models.User, error) {
+	user, err := s.store.GetUser(ctx, id)
 	if err != nil {
 		return nil, err
 	}

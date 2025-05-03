@@ -12,12 +12,12 @@ func init() {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 }
 
-type AppHandler struct {
+type Handler struct {
 	us *services.UserService
 }
 
-func NewAppHandler(us *services.UserService) *AppHandler {
-	return &AppHandler{
+func NewHandler(us *services.UserService) *Handler {
+	return &Handler{
 		us: us,
 	}
 }

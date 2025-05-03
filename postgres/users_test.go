@@ -19,7 +19,7 @@ import (
 func setupTestDB(t *testing.T) *pgxpool.Pool {
 	connStr := os.Getenv("TEST_DB_URL")
 	if connStr == "" {
-		connStr = "postgres://kobie:pa55word@localhost:5432/split_test_db?sslmode=disable"
+		connStr = "postgres://kobie:pa88word@localhost:5432/split_test?sslmode=disable"
 	}
 
 	pool, err := pgxpool.New(context.Background(), connStr)
@@ -30,13 +30,13 @@ func setupTestDB(t *testing.T) *pgxpool.Pool {
 
 func createTestUser(name, email string) *models.User {
 	return &models.User{
-		ID:           uuid.New().String(),
+		ID:           uuid.New(),
 		Name:         name,
 		Email:        email,
 		PasswordHash: []byte("hashedpassword"),
 		CreatedAt:    time.Now().UTC(),
 		UpdatedAt:    time.Now().UTC(),
-		Active:       true,
+		Verified:     true,
 	}
 }
 
@@ -74,7 +74,7 @@ func TestUserStore_CreateUser(t *testing.T) {
 		{
 			name: "empty name",
 			user: &models.User{
-				ID:           uuid.New().String(),
+				ID:           uuid.New(),
 				Email:        generateTestEmail(),
 				PasswordHash: []byte("hashedpassword"),
 				CreatedAt:    time.Now().UTC(),
@@ -112,7 +112,7 @@ func TestUserStore_GetUser(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		id      string
+		id      uuid.UUID
 		wantErr bool
 	}{
 		{
@@ -122,12 +122,12 @@ func TestUserStore_GetUser(t *testing.T) {
 		},
 		{
 			name:    "non-existent user",
-			id:      uuid.New().String(),
+			id:      uuid.New(),
 			wantErr: true,
 		},
 		{
 			name:    "invalid ID",
-			id:      "invalid-id",
+			id:      uuid.Nil,
 			wantErr: true,
 		},
 	}
@@ -210,7 +210,7 @@ func TestUserStore_DeleteUser(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		id      string
+		id      uuid.UUID
 		wantErr bool
 	}{
 		{
@@ -220,19 +220,19 @@ func TestUserStore_DeleteUser(t *testing.T) {
 		},
 		{
 			name:    "non-existent user",
-			id:      uuid.New().String(),
+			id:      uuid.New(),
 			wantErr: true,
 		},
 		{
 			name:    "invalid ID",
-			id:      "invalid-id",
+			id:      uuid.Nil,
 			wantErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := store.DeleteUser(ctx, tt.id)
+			err := store.DeleteUser(ctx, tt.id.String())
 			if tt.wantErr {
 				require.Error(t, err)
 				return

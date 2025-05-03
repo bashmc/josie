@@ -1,19 +1,21 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS users (
-    id VARCHAR(36) PRIMARY KEY,
+    id uuid PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    active BOOLEAN NOT NULL DEFAULT false
+    password_hash bytea NOT NULL,
+    profile_photo TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT now (),
+    updated_at TIMESTAMP NOT NULL DEFAULT now (),
+    verified BOOLEAN NOT NULL DEFAULT false
 );
 
-CREATE INDEX idx_users_email ON users(email);
--- +goose StatementEnd
+CREATE INDEX idx_users_email ON users (email);
 
+-- +goose StatementEnd
 -- +goose Down
 -- +goose StatementBegin
 DROP TABLE IF EXISTS users;
+
 -- +goose StatementEnd

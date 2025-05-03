@@ -7,10 +7,10 @@ import (
 )
 
 type server struct {
-	h *handlers.AppHandler
+	h *handlers.Handler
 }
 
-func newserver(handler *handlers.AppHandler) *server {
+func newserver(handler *handlers.Handler) *server {
 	return &server{
 		h: handler,
 	}

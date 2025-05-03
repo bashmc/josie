@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (h *AppHandler) UploadFile(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse form"})
@@ -20,10 +20,10 @@ func (h *AppHandler) UploadFile(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *AppHandler) DeleteFile(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) DeleteFile(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *AppHandler) GetUserFiles(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetUserFiles(w http.ResponseWriter, r *http.Request) {
 
 }

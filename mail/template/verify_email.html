@@ -1,0 +1,112 @@
+{{define "subject"}}Split - Verify Email Address {{end}}
+
+{{define "text"}}
+Hi there,
+
+Welcome to split! To complete your signup and secure your account, please verify your email address using the code
+below.
+
+Your verification code is:
+
+{{.Code}}
+
+Enter this 6-digit code on the verification page in split. This code is valid for the next 10 minutes.
+
+If you didn't attempt to sign up for split, please ignore this email. Your account will not be created without
+verification.
+
+Thanks,
+The split Team
+{{end}}
+
+
+
+{{define "html"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email for split</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #444444;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .code {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            /* Adjust color to match your branding */
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            display: inline-block;
+            letter-spacing: 3px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777777;
+        }
+    </style>
+</head>
+
+<body>
+    <span
+        style="display:none; font-size:1px; color:#ffffff; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;">Your
+        split verification code is inside.</span>
+
+    <div class="container">
+        <div class="header">
+           {{template "subject"}}
+        </div>
+        <div class="content">
+            <p>Hi there,</p>
+            <p>Welcome to split! To complete your signup and secure your account, please verify your email address using
+                the code below.</p>
+            <p>Your verification code is:</p>
+            <div class="code">{{.Code}}</div>
+            <p>Enter this 6-digit code on the verification page in split. This code is valid for the next <strong>10
+                    minutes</strong>.</p>
+            <p>If you didn't attempt to sign up for split, please ignore this email. Your account will not be created
+                without verification.</p>
+        </div>
+        <div class="footer">
+            <p>Thanks,<br>The split Team</p>
+        </div>
+    </div>
+</body>
+
+</html>
+{{end}}

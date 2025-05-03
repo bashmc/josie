@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"log/slog"
-	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 	"github.com/shcmd/split/handlers"
+	"github.com/shcmd/split/mail"
 	"github.com/shcmd/split/postgres"
 	"github.com/shcmd/split/services"
 )
@@ -18,7 +18,9 @@ func main() {
 		logFatal("failed to load environment variables", err)
 	}
 
-	db, err := pgxpool.New(context.Background(), os.Getenv("DB_URL"))
+	cfg := loadConfig()
+
+	db, err := pgxpool.New(context.Background(), cfg.PostgresURL)
 	if err != nil {
 		logFatal("failed to connect to database", err)
 	}
@@ -29,7 +31,8 @@ func main() {
 		logFatal("failed to ping db", err)
 	}
 
-	handler := handlers.NewAppHandler(services.NewUserService(postgres.NewUserStore(db)))
+	mailer := mail.NewMailer(cfg.MailConfig)
+	handler := handlers.NewHandler(services.NewUserService(postgres.NewUserStore(db), mailer))
 
 	srv := newserver(handler)
 
