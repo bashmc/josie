@@ -10,10 +10,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/shcmd/split/models"
+	"github.com/shcmd/split/postgres"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/ultcmd/split/models"
-	"github.com/ultcmd/split/postgres"
 )
 
 func setupTestDB(t *testing.T) *pgxpool.Pool {

@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
-func (s *Server) loadRoutes() *http.ServeMux {
+func (s *server) loadRoutes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	// users

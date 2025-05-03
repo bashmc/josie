@@ -7,9 +7,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"github.com/ultcmd/split/handlers"
-	"github.com/ultcmd/split/postgres"
-	"github.com/ultcmd/split/services"
+	"github.com/shcmd/split/handlers"
+	"github.com/shcmd/split/postgres"
+	"github.com/shcmd/split/services"
 )
 
 func main() {
@@ -31,7 +31,7 @@ func main() {
 
 	handler := handlers.NewAppHandler(services.NewUserService(postgres.NewUserStore(db)))
 
-	srv := NewServer(handler)
+	srv := newserver(handler)
 
 	slog.Info("Starting server")
 	err = srv.start()
