@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/shcmd/split/models"
-	"github.com/shcmd/split/postgres"
+	"github.com/shcmd/josie/models"
+	"github.com/shcmd/josie/postgres"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -19,7 +19,7 @@ import (
 func setupTestDB(t *testing.T) *pgxpool.Pool {
 	connStr := os.Getenv("TEST_DB_URL")
 	if connStr == "" {
-		connStr = "postgres://kobie:pa88word@localhost:5432/split_test?sslmode=disable"
+		connStr = "postgres://kobie:pa88word@localhost:5432/josie_test?sslmode=disable"
 	}
 
 	pool, err := pgxpool.New(context.Background(), connStr)

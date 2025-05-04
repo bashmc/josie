@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/shcmd/split/mail"
+	"github.com/shcmd/josie/mail"
 )
 
 type Config struct {

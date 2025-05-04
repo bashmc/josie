@@ -1,4 +1,4 @@
-module github.com/shcmd/split
+module github.com/shcmd/josie
 
 go 1.24.1
 

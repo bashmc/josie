@@ -1,8 +1,8 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS files (
-    id VARCHAR(36) PRIMARY KEY,
-    user_id VARCHAR(36),
+    id uuid PRIMARY KEY,
+    user_id uuid,
     name TEXT NOT NULL,
     size INT NOT NULL,
     ext VARCHAR(6) NULL,

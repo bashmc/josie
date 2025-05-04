@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/shcmd/split/models"
-	"github.com/shcmd/split/services"
+	"github.com/shcmd/josie/models"
+	"github.com/shcmd/josie/services"
 )
 
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
