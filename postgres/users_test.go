@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/shcmd/josie/models"
-	"github.com/shcmd/josie/postgres"
+	"github.com/shmdc/josie/models"
+	"github.com/shmdc/josie/postgres"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

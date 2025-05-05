@@ -1,4 +1,4 @@
-module github.com/shcmd/josie
+module github.com/shmdc/josie
 
 go 1.24.1
 

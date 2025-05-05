@@ -6,10 +6,10 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"github.com/shcmd/josie/handlers"
-	"github.com/shcmd/josie/mail"
-	"github.com/shcmd/josie/postgres"
-	"github.com/shcmd/josie/services"
+	"github.com/shmdc/josie/handlers"
+	"github.com/shmdc/josie/mail"
+	"github.com/shmdc/josie/postgres"
+	"github.com/shmdc/josie/services"
 )
 
 func main() {

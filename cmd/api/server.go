@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/shcmd/josie/handlers"
+	"github.com/shmdc/josie/handlers"
 )
 
 type server struct {
