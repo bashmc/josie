@@ -3,27 +3,34 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) UploadFile(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(10 << 20)
+func (h *Handler) UploadFile(c *gin.Context) {
+	err := c.Request.ParseMultipartForm(10 << 20)
 	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse form"})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse form"})
+		return
 	}
 
-	files := r.MultipartForm.File
+	files := c.Request.MultipartForm.File
 
 	for _, value := range files {
 		for i := range value {
 			fmt.Println(value[i].Filename)
 		}
 	}
+
+	c.Status(http.StatusOK)
 }
 
-func (h *Handler) DeleteFile(w http.ResponseWriter, r *http.Request) {
-
+func (h *Handler) DeleteFile(c *gin.Context) {
+	// Implement your delete logic here
+	c.Status(http.StatusOK)
 }
 
-func (h *Handler) GetUserFiles(w http.ResponseWriter, r *http.Request) {
-
+func (h *Handler) GetUserFiles(c *gin.Context) {
+	// Implement your get files logic here
+	c.Status(http.StatusOK)
 }

@@ -2,177 +2,142 @@ package handlers
 
 import (
 	"errors"
-	"log/slog"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/shmdc/josie/models"
 	"github.com/shmdc/josie/services"
 )
 
-func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) CreateUser(c *gin.Context) {
 	var input struct {
-		Name     string `json:"name" validate:"required"`
-		Email    string `json:"email" validate:"required,email"`
-		Password string `json:"password" validate:"required,gte=8,lte=20"`
+		Name     string `json:"name" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8,max=20"`
 	}
 
-	err := readJson(w, r, &input)
-	if err != nil {
-		slog.Error("failed to read request body", "error", err)
-		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse request body"})
 		return
 	}
 
-	err = validate.Struct(input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
-		return
-	}
-
-	user, err := h.us.CreateUser(r.Context(), input.Name, input.Email, input.Password)
+	user, err := h.us.CreateUser(c.Request.Context(), input.Name, input.Email, input.Password)
 	if err != nil {
 		if errors.Is(err, models.ErrDuplicateUser) {
-			writeJson(w, http.StatusConflict, Map{"message": err.Error()})
+			c.JSON(http.StatusConflict, gin.H{"message": err.Error()})
 			return
 		}
-
-		serverError(w)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	writeJson(w, http.StatusCreated, Map{"user": user})
+	c.JSON(http.StatusCreated, gin.H{"user": user})
 }
 
-func (h *Handler) VerifyUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) VerifyUser(c *gin.Context) {
 	var input struct {
-		Email string `json:"email" validate:"required,email"`
-		Code  string `json:"code" validate:"required"`
+		Email string `json:"email" binding:"required,email"`
+		Code  string `json:"code" binding:"required"`
 	}
 
-	err := readJson(w, r, &input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse request body"})
 		return
 	}
 
-	err = validate.Struct(input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
-		return
-	}
-
-	user, err := h.us.VerifyUser(r.Context(), input.Code, input.Email)
+	user, err := h.us.VerifyUser(c.Request.Context(), input.Code, input.Email)
 	if err != nil {
 		if errors.Is(err, services.ErrInvalidToken) {
-			writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 			return
 		}
-
-		serverError(w)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	writeJson(w, http.StatusOK, Map{"user": user})
-
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
-func (h *Handler) RequestVerification(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) RequestVerification(c *gin.Context) {
 	var input struct {
-		Email string `json:"email" validate:"required,email"`
+		Email string `json:"email" binding:"required,email"`
 	}
 
-	err := readJson(w, r, &input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse request body"})
 		return
 	}
 
-	err = validate.Struct(input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
-		return
-	}
-
-	err = h.us.ResendOTP(r.Context(), input.Email)
+	err := h.us.ResendOTP(c.Request.Context(), input.Email)
 	if err != nil {
 		if errors.Is(err, models.ErrNotFound) {
-			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
+			c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 			return
 		}
-
-		serverError(w)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
+	c.Status(http.StatusOK)
 }
 
-func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) Login(c *gin.Context) {
 	var input struct {
-		Email    string `json:"email" validate:"required"`
-		Password string `json:"password" validate:"required"`
+		Email    string `json:"email" binding:"required"`
+		Password string `json:"password" binding:"required"`
 	}
 
-	err := readJson(w, r, &input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
-		return
-	}
-	err = validate.Struct(input)
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "failed to parse request body"})
 		return
 	}
 
-	session, err := h.us.NewSession(r.Context(), input.Email, input.Password)
+	session, err := h.us.NewSession(c.Request.Context(), input.Email, input.Password)
 	if err != nil {
-		//TODO: handle error
+		c.Status(http.StatusUnauthorized)
 		return
 	}
 
-	writeJson(w, http.StatusOK, session)
+	c.JSON(http.StatusOK, session)
 }
 
-func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
-	userId := r.PathValue("id")
-	err := validate.Var(userId, "uuid")
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "invalid id"})
+func (h *Handler) GetUser(c *gin.Context) {
+	userId := c.Param("id")
+	if _, err := uuid.Parse(userId); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
 		return
 	}
 
-	user, err := h.us.FetchUser(r.Context(), uuid.MustParse(userId))
+	user, err := h.us.FetchUser(c.Request.Context(), uuid.MustParse(userId))
 	if err != nil {
 		if errors.Is(err, models.ErrNotFound) {
-			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
+			c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 			return
 		}
-
-		serverError(w)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	writeJson(w, http.StatusOK, user)
+	c.JSON(http.StatusOK, user)
 }
 
-func (h *Handler) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	userId := r.PathValue("id")
-	err := validate.Var(userId, "uuid")
-	if err != nil {
-		writeJson(w, http.StatusBadRequest, Map{"message": "invalid id"})
+func (h *Handler) DeleteUser(c *gin.Context) {
+	userId := c.Param("id")
+	if _, err := uuid.Parse(userId); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "invalid id"})
 		return
 	}
 
-	err = h.us.DeleteUser(r.Context(), userId)
+	err := h.us.DeleteUser(c.Request.Context(), userId)
 	if err != nil {
 		if errors.Is(err, models.ErrNotFound) {
-			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
+			c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 			return
 		}
-
-		serverError(w)
+		c.Status(http.StatusInternalServerError)
 		return
 	}
 
-	writeJson(w, http.StatusOK, Map{"message": "user successfully deleted"})
+	c.JSON(http.StatusOK, gin.H{"message": "user successfully deleted"})
 }

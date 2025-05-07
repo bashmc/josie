@@ -1,31 +1,27 @@
 package main
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/gin-gonic/gin"
 )
 
-func (s *server) loadRoutes() *chi.Mux {
-	r := chi.NewMux()
+func (s *server) loadRoutes() *gin.Engine {
+	r := gin.Default() // includes logger and recovery middleware
 
-	r.Use(middleware.Logger)
+	api := r.Group("/api")
 
-	r.Route("/api", func(r chi.Router) {
-		// users
-		r.Route("/users", func(r chi.Router) {
-			r.Post("/", s.h.CreateUser)
-			r.Post("/verify", s.h.VerifyUser)
-			r.Post("/verify/new", s.h.RequestVerification)
-			r.Get("/{id}", s.h.GetUser)
-			r.Delete("/{id}", s.h.DeleteUser)
-		})
-		// files
-		r.Route("/files", func(r chi.Router) {
-			r.Post("/", s.h.UploadFile)
-			r.Get("/users/{user_id}", s.h.GetUserFiles)
-			r.Delete("/{file_id}", s.h.DeleteFile)
-		})
-	})
+	//users
+	users := api.Group("/users")
+	users.POST("/", s.h.CreateUser)
+	users.POST("/verify", s.h.VerifyUser)
+	users.POST("/verify/new", s.h.RequestVerification)
+	users.GET("/:id", s.h.GetUser)
+	users.DELETE("/:id", s.h.DeleteUser)
+
+	//users
+	files := api.Group("/files")
+	files.POST("/", s.h.UploadFile)
+	files.GET("/users/:id", s.h.GetUserFiles)
+	files.DELETE("/:id", s.h.DeleteFile)
 
 	return r
 }

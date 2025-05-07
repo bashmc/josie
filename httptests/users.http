@@ -6,8 +6,8 @@ POST {{baseUrl}}/users
 Content-Type: {{contentType}}
 
 {
-    "name": "Jay Foreign",
-    "email": "jforeign@example.com",
+    "name": "Kobie Black",
+    "email": "koblack@example.com",
     "password": "queenslim"
 }
 

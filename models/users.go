@@ -21,7 +21,7 @@ type User struct {
 	ProfilePhoto string    `json:"profilePhoto"`
 	CreatedAt    time.Time `json:"createdAt"`
 	UpdatedAt    time.Time `json:"updatedAt"`
-	Verified     bool      `json:"active"`
+	Verified     bool      `json:"verified"`
 }
 
 type UserToken struct {
