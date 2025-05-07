@@ -77,6 +77,36 @@ func (h *Handler) VerifyUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (h *Handler) RequestVerification(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Email string `json:"email" validate:"required,email"`
+	}
+
+	err := readJson(w, r, &input)
+	if err != nil {
+		writeJson(w, http.StatusBadRequest, Map{"message": "failed to parse request body"})
+		return
+	}
+
+	err = validate.Struct(input)
+	if err != nil {
+		writeJson(w, http.StatusBadRequest, Map{"message": err.Error()})
+		return
+	}
+
+	err = h.us.ResendOTP(r.Context(), input.Email)
+	if err != nil {
+		if errors.Is(err, models.ErrNotFound) {
+			writeJson(w, http.StatusNotFound, Map{"message": err.Error()})
+			return
+		}
+
+		serverError(w)
+		return
+	}
+
+}
+
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email    string `json:"email" validate:"required"`

@@ -2,12 +2,8 @@ package models
 
 import (
 	"context"
-	"errors"
 )
 
-var (
-	ErrObjectNotFound = errors.New("object not found")
-)
 
 type File struct {
 	ID     string `json:"id"`

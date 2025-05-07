@@ -12,6 +12,26 @@ Content-Type: {{contentType}}
 }
 
 
+### verify a new user account
+POST {{baseUrl}}/users/verify
+Content-Type: {{contentType}}
+
+{
+    "code": "320161",
+    "email": "jforeign@example.com"
+}
+
+### request a new verification code
+POST {{baseUrl}}/users/verify/new
+Content-Type: {{contentType}}
+
+{
+    "email": "jforeign@example.com"
+}
+
+
+
+
 ### Get user by ID
 GET {{baseUrl}}/users/cd7894c5-273e-437e-935b-b6a30e5fdef0
 

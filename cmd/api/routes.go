@@ -14,6 +14,8 @@ func (s *server) loadRoutes() *chi.Mux {
 		// users
 		r.Route("/users", func(r chi.Router) {
 			r.Post("/", s.h.CreateUser)
+			r.Post("/verify", s.h.VerifyUser)
+			r.Post("/verify/new", s.h.RequestVerification)
 			r.Get("/{id}", s.h.GetUser)
 			r.Delete("/{id}", s.h.DeleteUser)
 		})
