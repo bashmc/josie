@@ -1,19 +1,29 @@
 package main
 
-import "net/http"
+import (
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+)
 
-func (s *server) loadRoutes() *http.ServeMux {
-	mux := http.NewServeMux()
+func (s *server) loadRoutes() *chi.Mux {
+	r := chi.NewMux()
 
-	// users
-	mux.HandleFunc("POST /users", s.h.CreateUser)
-	mux.HandleFunc("GET /users/{id}", s.h.GetUser)
-	mux.HandleFunc("DELETE /users/{id}", s.h.DeleteUser)
+	r.Use(middleware.Logger)
 
-	// files
-	mux.HandleFunc("POST /files", s.h.UploadFile)
-	mux.HandleFunc("GET /files", s.h.GetUserFiles)
-	mux.HandleFunc("DELETE /files", s.h.DeleteFile)
+	r.Route("/api", func(r chi.Router) {
+		// users
+		r.Route("/users", func(r chi.Router) {
+			r.Post("/", s.h.CreateUser)
+			r.Get("/{id}", s.h.GetUser)
+			r.Delete("/{id}", s.h.DeleteUser)
+		})
+		// files
+		r.Route("/files", func(r chi.Router) {
+			r.Post("/", s.h.UploadFile)
+			r.Get("/users/{user_id}", s.h.GetUserFiles)
+			r.Delete("/{file_id}", s.h.DeleteFile)
+		})
+	})
 
-	return mux
+	return r
 }

@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:7000
+@baseUrl = http://localhost:7000/api
 @contentType = application/json
 
 ### Create a new user account
@@ -6,8 +6,8 @@ POST {{baseUrl}}/users
 Content-Type: {{contentType}}
 
 {
-    "name": "Realest Doe",
-    "email": "real.doe@example.com",
+    "name": "Jay Foreign",
+    "email": "jforeign@example.com",
     "password": "queenslim"
 }
 
