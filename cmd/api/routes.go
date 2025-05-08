@@ -5,7 +5,7 @@ import (
 )
 
 func (s *server) loadRoutes() *gin.Engine {
-	r := gin.Default() // includes logger and recovery middleware
+	r := gin.Default()
 
 	api := r.Group("/api")
 
