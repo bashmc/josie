@@ -1,6 +1,6 @@
 # 📁 Josie – A Modern File Sharing Platform
 
-**Josie** file sharing platform inspired by Google Drive. Built **SvelteKit** frontend, and a  backend written in **Go**, Josie lets users upload, manage, and share files.
+**Josie** file sharing platform inspired by Google Drive. Built with a **React** frontend and a backend written in **Go**, Josie lets users upload, manage, and share files.
 
 ---
 
@@ -19,7 +19,7 @@
 
 | Layer        | Technology    |
 |--------------|---------------|
-| Frontend     | [SvelteKit](https://kit.svelte.dev) |
+| Frontend     | [React](https://react.dev) |
 | Backend      | [Go](https://go.dev) |
 | Database     | Postgres |
 | Auth         | JWT |
