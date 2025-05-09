@@ -6,9 +6,9 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/fatcmd/josie/mail"
-	"github.com/fatcmd/josie/models"
 	"github.com/google/uuid"
+	"github.com/topkobie/josie/mail"
+	"github.com/topkobie/josie/models"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -1,4 +1,4 @@
-module github.com/fatcmd/josie
+module github.com/topkobie/josie
 
 go 1.24.1
 

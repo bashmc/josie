@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/fatcmd/josie/services"
+	"github.com/topkobie/josie/services"
 )
 
 type Handler struct {
