@@ -1,6 +1,6 @@
-# 📁 Josie – A Modern File Sharing Platform
+# 📁 Josie – A File Sharing Platform
 
-**Josie** file sharing platform inspired by Google Drive. Built with a **React** frontend and a backend written in **Go**, Josie lets users upload, manage, and share files.
+**Josie** file sharing platform inspired by Google Drive. Built with a **Vue** frontend and a backend written in **Go**, Josie lets users upload, manage, and share files.
 
 ---
 
@@ -19,7 +19,7 @@
 
 | Layer        | Technology    |
 |--------------|---------------|
-| Frontend     | [React](https://react.dev) |
+| Frontend     | [Vue](https://vuejs.org) |
 | Backend      | [Go](https://go.dev) |
 | Database     | Postgres |
 | Auth         | JWT |
