@@ -8,7 +8,7 @@ import (
 	"log/slog"
 	"math/big"
 
-	"github.com/shmdc/josie/mail"
+	"github.com/fatcmd/josie/mail"
 )
 
 // GenerateOTP generates a 6-digit OTP as a string

@@ -1,9 +1,8 @@
 package handlers
 
 import (
-	"github.com/shmdc/josie/services"
+	"github.com/fatcmd/josie/services"
 )
-
 
 type Handler struct {
 	us *services.UserService

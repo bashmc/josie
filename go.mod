@@ -1,4 +1,4 @@
-module github.com/shmdc/josie
+module github.com/fatcmd/josie
 
 go 1.24.1
 

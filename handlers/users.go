@@ -4,10 +4,10 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/fatcmd/josie/models"
+	"github.com/fatcmd/josie/services"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/shmdc/josie/models"
-	"github.com/shmdc/josie/services"
 )
 
 func (h *Handler) CreateUser(c *gin.Context) {
