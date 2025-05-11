@@ -1,0 +1,28 @@
+
+services:
+  josie:
+    build: .
+    image: josie-app:latest
+    container_name: josie-app
+    ports:
+      - "7000:7000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/josie?sslmode=disable
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    container_name: josie-db
+    restart: always
+    environment:
+      POSTGRES_DB: josie
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - josie-db-data:/var/lib/postgresql/data
+
+volumes:
+  josie-db-data:
