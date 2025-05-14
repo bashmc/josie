@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/topkobie/josie/handlers"
+	"github.com/bashmc/josie/handlers"
 )
 
 type server struct {

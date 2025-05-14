@@ -4,12 +4,12 @@ import (
 	"context"
 	"log/slog"
 
+	"github.com/bashmc/josie/handlers"
+	"github.com/bashmc/josie/mail"
+	"github.com/bashmc/josie/postgres"
+	"github.com/bashmc/josie/services"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
-	"github.com/topkobie/josie/handlers"
-	"github.com/topkobie/josie/mail"
-	"github.com/topkobie/josie/postgres"
-	"github.com/topkobie/josie/services"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/topkobie/josie/mail"
+	"github.com/bashmc/josie/mail"
 )
 
 type Config struct {

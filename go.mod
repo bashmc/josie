@@ -1,4 +1,4 @@
-module github.com/topkobie/josie
+module github.com/bashmc/josie
 
 go 1.24.1
 
