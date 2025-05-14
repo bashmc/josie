@@ -4,10 +4,10 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/bashmc/josie/handlers"
-	"github.com/bashmc/josie/mail"
-	"github.com/bashmc/josie/postgres"
-	"github.com/bashmc/josie/services"
+	"github.com/gitsnack/josie/handlers"
+	"github.com/gitsnack/josie/mail"
+	"github.com/gitsnack/josie/postgres"
+	"github.com/gitsnack/josie/services"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 )

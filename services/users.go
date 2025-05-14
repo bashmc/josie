@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/bashmc/josie/mail"
-	"github.com/bashmc/josie/models"
+	"github.com/gitsnack/josie/mail"
+	"github.com/gitsnack/josie/models"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )

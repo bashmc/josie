@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/bashmc/josie/models"
-	"github.com/bashmc/josie/services"
 	"github.com/gin-gonic/gin"
+	"github.com/gitsnack/josie/models"
+	"github.com/gitsnack/josie/services"
 	"github.com/google/uuid"
 )
 

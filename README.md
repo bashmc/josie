@@ -41,7 +41,7 @@
 
 1. Clone the repo and navigate to the backend directory:
    ```bash
-   git clone https://github.com/bashmc/josie.git
+   git clone https://github.com/gitsnack/josie.git
    cd josie
     ```
 2. Run the app

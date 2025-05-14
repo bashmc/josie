@@ -1,4 +1,4 @@
-module github.com/bashmc/josie
+module github.com/gitsnack/josie
 
 go 1.24.1
 

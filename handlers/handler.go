@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/bashmc/josie/services"
+	"github.com/gitsnack/josie/services"
 )
 
 type Handler struct {
